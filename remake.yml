@@ -1,0 +1,22 @@
+sources:
+  - 1_fetch/src/download_sb_file.R
+  - 2_process/src/clean_up_data.R
+  - 3_visualize/src/plot_rmse.R
+
+packages:
+  - dplyr
+  - sbtools
+  - stringr
+
+targets:
+  all:
+    depends: 3_visualize/out/figure_1.png
+
+  1_fetch/out/model_RMSEs.csv:
+    command: download_data(target_name)
+
+  2_process/out/model_summary_results.csv:
+    command: process_data(target_name, "1_fetch/out/model_RMSEs.csv")
+
+  3_visualize/out/figure_1.png:
+    command: plot_data(target_name, "2_process/out/model_summary_results.csv")

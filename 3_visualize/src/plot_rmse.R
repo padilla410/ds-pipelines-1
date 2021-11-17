@@ -1,12 +1,18 @@
-plot_rmse <- function(png_file, eval_data) {
-  png(file = png_file, width = 8, height = 10, res = 200, units = 'in')
+# Function to plot data
+plot_data <- function(output_path, input_data) {
+  # read in data
+  model_results <- readr::read_csv(input_data)
+  
+  # create .png file for saving plot
+  png(file = output_path, width = 8, height = 10, res = 200, units = 'in')
   par(omi = c(0,0,0.05,0.05), mai = c(1,1,0,0), las = 1, mgp = c(2,.5,0), cex = 1.5)
   
-  plot(NA, NA, xlim = c(2, 1000), ylim = c(4.7, 0.75),
-       ylab = "Test RMSE (°C)", xlab = "Training temperature profiles (#)", log = 'x', axes = FALSE)
+  # plot data
+  plot(model_results$n_prof, model_results$rmse, xlim = c(2, 1000), ylim = c(4.7, 0.75),ylab = "Test RMSE (°C)", xlab = "Training temperature profiles (#)", log = 'x', axes = FALSE)
   
   n_profs <- c(2, 10, 50, 100, 500, 980)
   
+  # Set axis properties
   axis(1, at = c(-100, n_profs, 1e10), labels = c("", n_profs, ""), tck = -0.01)
   axis(2, at = seq(0,10), las = 1, tck = -0.01)
   
@@ -14,9 +20,8 @@ plot_rmse <- function(png_file, eval_data) {
   offsets <- data.frame(pgdl = c(0.15, 0.5, 3, 7, 20, 30)) %>%
     mutate(dl = -pgdl, pb = 0, n_prof = n_profs)
   
-  
   for (mod in c('pb','dl','pgdl')){
-    mod_data <- filter(eval_data, model_type == mod)
+    mod_data <- filter(model_results, model_type == mod)
     mod_profiles <- unique(mod_data$n_prof)
     for (mod_profile in mod_profiles){
       d <- filter(mod_data, n_prof == mod_profile) %>% summarize(y0 = min(rmse), y1 = max(rmse), col = unique(col))
@@ -41,4 +46,5 @@ plot_rmse <- function(png_file, eval_data) {
   text(2.3, 1.1, 'Process-Based', pos = 4, cex = 1.1)
   
   dev.off()
+  
 }
