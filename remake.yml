@@ -3,6 +3,11 @@ sources:
   - 2_process/src/clean_up_data.R
   - 3_visualize/src/plot_rmse.R
 
+packages:
+  - dplyr
+  - sbtools
+  - stringr
+
 targets:
   all:
     depends: 3_visualize/out/figure_1.png

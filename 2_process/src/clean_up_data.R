@@ -1,7 +1,3 @@
-# Load necessary packages
-library(dplyr)
-library(stringr)
-
 # Function to process data
 process_data <- function(output_path, input_data) {
   # load data
@@ -20,7 +16,5 @@ process_data <- function(output_path, input_data) {
       model_type == 'pgdl' ~ 23
     ), n_prof = as.numeric(str_extract(exper_id, '[0-9]+')))
   # write processed data to file
-  readr::write_csv(eval_data, path = output_path)
-  # return processed data
-  return(eval_data)
+  readr::write_csv(eval_data, file = output_path)
 }

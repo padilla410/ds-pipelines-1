@@ -1,6 +1,3 @@
-# Load necessary packages
-library(sbtools)
-
 # Function to fetch data
 download_data <- function(output_path) {
   # fetch data and overwrite file

@@ -1,6 +1,3 @@
-# Load necessary packages
-library(dplyr)
-
 # Function to plot data
 plot_data <- function(output_path, input_data) {
   # read in data
